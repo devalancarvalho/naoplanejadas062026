@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fechamento de Projeto — Time PCM</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f0f2f5;
+    color: #1a202c;
+    min-height: 100vh;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #d1d5db;
+  }
+
+  .brand { display: flex; flex-direction: column; gap: 4px; }
+
+  .team-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2563eb;
+  }
+
+  .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+
+  .badge-nao-planejado {
+    background: #ede9fe;
+    color: #6d28d9;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #c4b5fd;
+    white-space: nowrap;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1;
+  }
+
+  .stat-value.blue { color: #2563eb; }
+  .stat-value.green { color: #16a34a; }
+  .stat-value.amber { color: #d97706; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .section-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .section-tag.inpasa { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+  .section-tag.censo  { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+  .section-tag.aralco { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+  .section-tag.usina  { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
+  .section-tag.outros { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+  .section-title { font-size: 15px; font-weight: 600; color: #111827; }
+
+  .os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 640px) { .os-grid { grid-template-columns: 1fr; } }
+
+  .os-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.15s;
+  }
+
+  .os-card:hover { border-color: #9ca3af; }
+
+  .os-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #9ca3af;
+  }
+
+  .os-desc {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+  }
+
+  .os-card.full { grid-column: 1 / -1; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-team { font-size: 13px; font-weight: 700; color: #2563eb; letter-spacing: 0.08em; text-transform: uppercase; }
+  .footer-note { font-size: 12px; color: #9ca3af; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="brand">
+      <span class="team-name">Time PCM</span>
+      <h1 class="page-title">Fechamento de Projeto</h1>
+      <p class="page-subtitle">Ordens de Serviço entregues no período</p>
+    </div>
+    <span class="badge-nao-planejado">Não Planejado</span>
+  </header>
+
+  <div class="stats">
+    <div class="stat-card">
+      <span class="stat-label">Total de O.S</span>
+      <span class="stat-value blue">31</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Clientes atendidos</span>
+      <span class="stat-value green">6</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">INPASA / Rodobras</span>
+      <span class="stat-value blue">25</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Demais clientes</span>
+      <span class="stat-value amber">6</span>
+    </div>
+  </div>
+
+  <!-- INPASA -->
+  <div class="section-header">
+    <span class="section-tag inpasa">INPASA · Rodobras</span>
+    <span class="section-title">25 ordens de serviço</span>
+  </div>
+  <hr class="divider">
+  <div class="os-grid">
+    <div class="os-card">
+      <span class="os-number">O.S 106969</span>
+      <p class="os-desc">Novas colunas na tela de cadastro para controle de bloqueio de clientes, refletido no CS PDV. Ajuste no campo de Data Final com habilitação de campo de justificativa.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106968</span>
+      <p class="os-desc">Ajustes na consulta de Controle de Crédito no CS PDV. Nova coluna "Situação" e novos filtros: cliente, placa, CPF/CNPJ e nome do cliente.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106947</span>
+      <p class="os-desc">Nova opção "Preço Fixo" no campo Tipo Valor.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106878</span>
+      <p class="os-desc">Melhorias e desenvolvimento na tela de Intervenção de Bomba, conforme requisitos Rodobras.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106839</span>
+      <p class="os-desc">Reajuste no processo de recebimento via cheque, com tratamento para emissão de cheque-troco ao cliente.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106816</span>
+      <p class="os-desc">Desenvolvimento do processo completo de baixa parcial de abastecimentos.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106806</span>
+      <p class="os-desc">Desenvolvimento do processo completo de lançamentos de uso e consumo.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106765</span>
+      <p class="os-desc">Nova tela e/ou campo para cadastro de tag de cartão RFID, exclusivo para realização de aferições.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106764</span>
+      <p class="os-desc">Novo relatório de consulta de aferições realizadas e finalizadas no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106719</span>
+      <p class="os-desc">Ajustes no processo de finalização de venda: preenchimento/ajuste de dados de placa, KM e cliente.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106715</span>
+      <p class="os-desc">Melhorias no processo de pagamento — tipos POS e PIX Estático.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106714</span>
+      <p class="os-desc">Ajustes no processo de cancelamento de vendas via TEF (PINPAD).</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106713</span>
+      <p class="os-desc">Ajustes e melhorias na Consulta de Vendas no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106712</span>
+      <p class="os-desc">Melhorias no processo de pré-cadastro de clientes na tela "Informações da Venda".</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106711</span>
+      <p class="os-desc">Ajustes na Consulta de Controle de Crédito de Cliente no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106710</span>
+      <p class="os-desc">Nova tela e melhorias para o processo da Carta Frete no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106709</span>
+      <p class="os-desc">Melhorias nos comprovantes impressos originados do processo de lançamento de caixa.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106708</span>
+      <p class="os-desc">Desenvolvimento do processo de autenticação (usuário/senha) para visualização de telas específicas no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106707</span>
+      <p class="os-desc">Desenvolvimento do processo de inserção de vendedor em vendas de produtos no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106706</span>
+      <p class="os-desc">Processo de alteração de senha no CS PDV, equivalente à funcionalidade existente no CS ERP.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106698</span>
+      <p class="os-desc">Ajuste de estoque contábil — perdas e sobras nas medições.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106679</span>
+      <p class="os-desc">Ajustes no cupom de impressão de aferição (Rodobras / CS PDV).</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106678</span>
+      <p class="os-desc">Ajustes no processo de exclusão de item da venda no CS PDV.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106621</span>
+      <p class="os-desc">Criação do relatório de medições de tanque conforme layout especificado.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 106614</span>
+      <p class="os-desc">Criação do relatório de LMC — Livro de Movimentação de Combustíveis.</p>
+    </div>
+  </div>
+
+  <!-- CENSO NSO -->
+  <div class="section-header">
+    <span class="section-tag censo">CENSO NSO</span>
+    <span class="section-title">1 ordem de serviço</span>
+  </div>
+  <hr class="divider">
+  <div class="os-grid">
+    <div class="os-card full">
+      <span class="os-number">O.S 106973</span>
+      <p class="os-desc">Melhoria no cadastro dos planos de preventiva, conforme requisitos definidos pelo Túlio.</p>
+    </div>
+  </div>
+
+  <!-- ARALCO -->
+  <div class="section-header">
+    <span class="section-tag aralco">ARALCO</span>
+    <span class="section-title">1 ordem de serviço</span>
+  </div>
+  <hr class="divider">
+  <div class="os-grid">
+    <div class="os-card full">
+      <span class="os-number">O.S 106808</span>
+      <p class="os-desc">Ajuste no relatório de Fechamento Check-List conforme especificação.</p>
+    </div>
+  </div>
+
+  <!-- USINA RAA -->
+  <div class="section-header">
+    <span class="section-tag usina">USINA RAA</span>
+    <span class="section-title">1 ordem de serviço</span>
+  </div>
+  <hr class="divider">
+  <div class="os-grid">
+    <div class="os-card full">
+      <span class="os-number">O.S 106516</span>
+      <p class="os-desc">Criação do processo de integração de abastecimentos da Abastek.</p>
+    </div>
+  </div>
+
+  <!-- DEMAIS -->
+  <div class="section-header">
+    <span class="section-tag outros">Outros clientes</span>
+    <span class="section-title">TieteAgro · USL</span>
+  </div>
+  <hr class="divider">
+  <div class="os-grid">
+    <div class="os-card">
+      <span class="os-number">O.S 105435 · TieteAgro</span>
+      <p class="os-desc">Criação da tela 7466 (Horas Trabalhadas) no CS Manutenção Automotiva 4.0, com pop-up de conferência ao clicar duas vezes em horas de jornada.</p>
+    </div>
+    <div class="os-card">
+      <span class="os-number">O.S 105366 · USL</span>
+      <p class="os-desc">Criação da tela 8717 no CS 4.0 para conferência e tratativa de apontamentos.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-team">Time PCM</span>
+    <span class="footer-note">Ordens de serviço não planejadas — fechamento de projeto</span>
+  </footer>
+
+</div>
+</body>
+</html>
