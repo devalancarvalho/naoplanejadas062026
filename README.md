@@ -1,0 +1,1 @@
+# naoplanejadas062026
